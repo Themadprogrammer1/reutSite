@@ -31,23 +31,29 @@ function App() {
 
   if (!accessGranted) {
     return (
-      <div className="access-denied bg-dark text-white d-flex flex-column justify-content-center align-items-center vh-100 text-center">
-        <h1 className="fw-light display-4 mb-4">A Special Question...</h1>
-        <p className="lead text-muted px-4">Please make sure you have the correct link.</p>
+      <div className="access-denied bg-dark text-white d-flex flex-column justify-content-center align-items-center vh-100 text-center" dir="rtl">
+        <h1 className="fw-light display-4 mb-4">שאלה מיוחדת...</h1>
+        <p className="lead text-muted px-4">אנא ודאו שיש לכם את הקישור הנכון.</p>
       </div>
     );
   }
 
   if (!started) {
     return (
-      <div className="start-screen bg-dark text-white d-flex flex-column justify-content-center align-items-center vh-100 text-center">
-        <h1 className="fw-light display-3 mb-5 px-4 animate-fade-in">Ready?</h1>
+      <div className="start-screen bg-dark text-white d-flex flex-column justify-content-center align-items-center vh-100 text-center" dir="rtl">
+        <h1 className="fw-light display-3 mb-5 px-4 animate-fade-in">מוכנים?</h1>
         <button 
           className="btn btn-outline-light btn-lg rounded-pill px-5 py-3 animate-fade-in-delayed"
           onClick={() => setStarted(true)}
         >
-          Tap to Start
+          לחצו להתחלה
         </button>
+        {/* Preload images */}
+        <div style={{ display: 'none' }}>
+          {photos.map((url, i) => (
+            <img key={i} src={url} referrerPolicy="no-referrer" alt="preload" />
+          ))}
+        </div>
       </div>
     );
   }
@@ -57,17 +63,13 @@ function App() {
   return (
     <div className="gallery-container bg-dark vh-100 vw-100 overflow-hidden position-relative">
       
-      {/* Hidden YouTube Iframe for background music */}
-      <iframe 
-        width="0" 
-        height="0" 
-        src={`https://www.youtube.com/embed/${CONFIG.YOUTUBE_VIDEO_ID}?autoplay=1&controls=0&loop=1&playlist=${CONFIG.YOUTUBE_VIDEO_ID}`} 
-        title="YouTube video player" 
-        frameBorder="0" 
-        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
-        allowFullScreen
+      {/* Local MP3 Audio for background music */}
+      <audio 
+        src="/song.mp3" 
+        autoPlay 
+        loop 
         className="d-none"
-      ></iframe>
+      ></audio>
 
       {!isFinished ? (
         photos.map((photoUrl, index) => (
@@ -85,9 +87,9 @@ function App() {
           </div>
         ))
       ) : (
-        <div className="final-screen d-flex flex-column justify-content-center align-items-center w-100 h-100 text-white text-center">
-          <h1 className="display-1 fw-light mb-4 animate-fade-in">What's Next?</h1>
-          <p className="lead px-4 animate-fade-in-delayed">Look at me...</p>
+        <div className="final-screen d-flex flex-column justify-content-center align-items-center w-100 h-100 text-white text-center" dir="rtl">
+          <h1 className="display-1 fw-light mb-4 animate-fade-in">מה הלאה?</h1>
+          <p className="lead px-4 animate-fade-in-delayed">תסתכלי עליי...</p>
         </div>
       )}
     </div>
