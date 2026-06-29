@@ -80,7 +80,7 @@ function App() {
       {/* Audio element in DOM for reliable mobile playback */}
       <audio 
         ref={audioRef}
-        src="/song.mp3" 
+        src="song.mp3" 
         preload="auto"
         loop 
         className="d-none"
