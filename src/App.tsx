@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { CONFIG } from "./Config";
 import photos from "./data.json";
 import "./App.css";
@@ -8,15 +8,13 @@ function App() {
   const [accessGranted, setAccessGranted] = useState(false);
   const [started, setStarted] = useState(false);
   const [currentSlide, setCurrentSlide] = useState(0);
-  const [audio] = useState(() => new Audio("/song.mp3"));
-
-  useEffect(() => {
-    audio.loop = true;
-  }, [audio]);
+  const audioRef = useRef<HTMLAudioElement>(null);
 
   const handleStart = () => {
     setStarted(true);
-    audio.play().catch((e) => console.error("Audio play failed:", e));
+    if (audioRef.current) {
+      audioRef.current.play().catch(e => console.error("Audio play failed:", e));
+    }
   };
 
   useEffect(() => {
@@ -78,6 +76,16 @@ function App() {
 
   return (
     <div className="gallery-container bg-dark vh-100 vw-100 overflow-hidden position-relative">
+      
+      {/* Audio element in DOM for reliable mobile playback */}
+      <audio 
+        ref={audioRef}
+        src="/song.mp3" 
+        preload="auto"
+        loop 
+        className="d-none"
+      />
+
       {!isFinished ? (
         photos.map((photoUrl, index) => (
           <div
